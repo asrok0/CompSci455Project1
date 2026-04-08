@@ -1,4 +1,4 @@
-public class VignereCipher {
+public class VigenereCipher {
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
     // Convert characters to numbers starting at a=0
@@ -22,8 +22,8 @@ public class VignereCipher {
         return extendedKey.toString();
     }
 
-    //Encrypt using the Vignere Cipher
-    public static String vignereEncrypt(String plaintext, String key) {
+    //Encrypt using the Vigenere Cipher
+    public static String vigenereEncrypt(String plaintext, String key) {
         plaintext = plaintext.replaceAll("\\s+", "").toLowerCase();
         key = key.toLowerCase();
 
@@ -41,8 +41,8 @@ public class VignereCipher {
         return ciphertext.toString();
     }
 
-    //Decrypt ciphertext using Vignere Cipher
-    public static String vignereDecrypt(String ciphertext, String key) {
+    //Decrypt ciphertext using Vigenere Cipher
+    public static String vigenereDecrypt(String ciphertext, String key) {
         ciphertext = ciphertext.toLowerCase();
         key = key.toLowerCase();
 
