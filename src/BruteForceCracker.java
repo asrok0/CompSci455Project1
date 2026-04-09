@@ -3,7 +3,7 @@ import java.util.*;
 
 public class BruteForceCracker {
 
-    // Turn dictionary.txt into a hashset
+    // Turn dictionary into a hashset
     public static HashSet<String> loadDictionary(String filePath) throws IOException {
         HashSet<String> dictionary = new HashSet<>();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -17,36 +17,33 @@ public class BruteForceCracker {
         return dictionary;
     }
 
-    // Generate all possible keys
-    public static void generateKeys(String prefix, int keyLength, ArrayList<String> keys) {
+    // Generate all possible keys and test them
+    public static void generateAndTestKeys(String prefix, int keyLength, String ciphertext, int firstWordLength, HashSet<String> dictionary) {
+
         if (prefix.length() == keyLength) {
-            keys.add(prefix);
+            String plaintext = VigenereCipher.vigenereDecrypt(ciphertext, prefix);
+            String firstWord = plaintext.substring(0, firstWordLength);
+
+            if (dictionary.contains(firstWord)) {
+                System.out.println("Possible Key: " + prefix);
+                System.out.println("Possible Plaintext: " + plaintext);
+                System.out.println();
+            }
+
             return;
         }
 
         for (char c = 'a'; c <= 'z'; c++) {
-            generateKeys(prefix + c,keyLength, keys);
+            generateAndTestKeys(prefix + c, keyLength, ciphertext, firstWordLength, dictionary);
         }
     }
 
-    // Brute force the Vigenere Cipher
+    // Brute force wrapper
     public static void bruteForceVigenere(String ciphertext, int keyLength, int firstWordLength, HashSet<String> dictionary) {
-        ArrayList<String> keys = new ArrayList<>();
-
-        generateKeys("", keyLength, keys);
 
         long startTime = System.currentTimeMillis();
 
-        for (String key : keys) {
-            String plaintext = VigenereCipher.vigenereDecrypt(ciphertext, key);
-            String firstWord = plaintext.substring(0, firstWordLength);
-
-            if (dictionary.contains(firstWord)) {
-                System.out.println("Possible Key: " + key);
-                System.out.println("Possible Plaintext: " + plaintext);
-                System.out.println();
-            }
-        }
+        generateAndTestKeys("", keyLength, ciphertext, firstWordLength, dictionary);
 
         long endTime = System.currentTimeMillis();
 
