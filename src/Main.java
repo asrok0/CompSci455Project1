@@ -6,7 +6,7 @@ public class Main {
 
         //Task 1: Vigenere Cipher
         String plaintext = "This is a test";
-        String key = "testkey";
+        String key = "key";
 
         String encrypted = VigenereCipher.vigenereEncrypt(plaintext, key);
         System.out.println("Plaintext: " + plaintext);
@@ -18,7 +18,7 @@ public class Main {
 
         //Task 2: Brute forcing Vigenere Cipher
         HashSet<String> dictionary = BruteForceCracker.loadDictionary("P1_dict.txt");
-        String ciphertext = "mlalswymikm";
-        BruteForceCracker.bruteForceVigenere(ciphertext, 7, 4, dictionary);
+        String ciphertext = "dlgcmqkxccx";
+        BruteForceCracker.bruteForceVigenere(ciphertext, 3, 4, dictionary);
     }
 }

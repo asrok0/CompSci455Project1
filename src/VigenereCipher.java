@@ -59,5 +59,4 @@ public class VigenereCipher {
 
         return plaintext.toString();
     }
-
 }

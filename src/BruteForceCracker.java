@@ -18,23 +18,24 @@ public class BruteForceCracker {
     }
 
     // Generate all possible keys and test them
-    public static void generateAndTestKeys(String prefix, int keyLength, String ciphertext, int firstWordLength, HashSet<String> dictionary) {
+    public static void generateAndTestKeys(String prefix, int keyLength, String ciphertext, int firstWordLength, HashSet<String> dictionary, List<String> matches) {
 
         if (prefix.length() == keyLength) {
             String plaintext = VigenereCipher.vigenereDecrypt(ciphertext, prefix);
-            String firstWord = plaintext.substring(0, firstWordLength);
 
-            if (dictionary.contains(firstWord)) {
-                System.out.println("Possible Key: " + prefix);
-                System.out.println("Possible Plaintext: " + plaintext);
-                System.out.println();
+            if (plaintext.length() >= firstWordLength) {
+                String firstWord = plaintext.substring(0, firstWordLength);
+
+                if (dictionary.contains(firstWord)) {
+                    matches.add("Possible Key: " + prefix + " | Possible Plaintext: " + plaintext);
+                }
             }
 
             return;
         }
 
         for (char c = 'a'; c <= 'z'; c++) {
-            generateAndTestKeys(prefix + c, keyLength, ciphertext, firstWordLength, dictionary);
+            generateAndTestKeys(prefix + c, keyLength, ciphertext, firstWordLength, dictionary, matches);
         }
     }
 
@@ -43,9 +44,14 @@ public class BruteForceCracker {
 
         long startTime = System.currentTimeMillis();
 
-        generateAndTestKeys("", keyLength, ciphertext, firstWordLength, dictionary);
+        List<String> matches = new ArrayList<>();
+        generateAndTestKeys("", keyLength, ciphertext, firstWordLength, dictionary, matches);
 
         long endTime = System.currentTimeMillis();
+
+        for (String match : matches) {
+            System.out.println(match);
+        }
 
         System.out.println("Time to complete: " + (endTime - startTime) + "ms");
     }
